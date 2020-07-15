@@ -1,0 +1,33 @@
+<?php
+
+
+namespace app\commands;
+
+
+use app\models\console\Telegram;
+use yii\console\Controller;
+
+class TelegramController extends Controller
+{
+    public function run($route, $params = [])
+    {
+
+    }
+
+    public function actionRegister()
+    {
+        Telegram::registerSession();
+    }
+
+    public function actionKunaBot($number)
+    {
+        $telegram = new Telegram($number);
+        $telegram->runKunaCodeBot();
+    }
+
+    public function actionSendHello()
+    {
+        $telegram = new Telegram;
+        $telegram->sendHello();
+    }
+}
