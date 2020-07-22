@@ -23,7 +23,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'add-admin'],
                         'allow' => true,
                     ],
                     [
@@ -114,7 +114,7 @@ class SiteController extends Controller
     }*/
 
     public function actionAddAdmin() {
-        $model = User::find()->where(['username' => 'admin'])->one();
+        $model = User::find()->where(['username' => 'diver90'])->one();
         if (empty($model)) {
             $user = new User();
             $user->username = 'diver90';
