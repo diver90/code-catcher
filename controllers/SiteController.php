@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -111,4 +112,18 @@ class SiteController extends Controller
 
         return $result;
     }*/
+
+    public function actionAddAdmin() {
+        $model = User::find()->where(['username' => 'admin'])->one();
+        if (empty($model)) {
+            $user = new User();
+            $user->username = 'diver90';
+            $user->email = 'diver90.deep@gmail.com';
+            $user->setPassword('vbhf,tkkf');
+            $user->generateAuthKey();
+            if ($user->save()) {
+                echo 'good';
+            }
+        }
+    }
 }
