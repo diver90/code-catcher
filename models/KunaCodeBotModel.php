@@ -116,7 +116,7 @@ class KunaCodeBotModel extends BaseObject
 
         } else {
 
-            dump('First cycle: ' . PHP_EOL);
+            print_r('First cycle: ' . PHP_EOL);
             foreach ($orders as $new_order) {
 
                 $table = new KunaDeals();
