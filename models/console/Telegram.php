@@ -18,10 +18,10 @@ class Telegram extends BaseObject
         $settings = [
             'logger' => [
                 'logger_level' => Logger::ERROR,
-                'logger_param' => './runtime/logs/Madeline.log'
+                'logger_param' => __DIR__ . '/../../runtime/logs/Madeline.log'
             ]
         ];
-        $path = './runtime/' . $number . '.madeline';
+        $path = __DIR__ . '/../../runtime/' . $number . '.madeline';
         $this->madelin = new API($path, $settings);
         parent::__construct($config);
     }
