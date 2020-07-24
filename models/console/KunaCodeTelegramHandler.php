@@ -242,7 +242,7 @@ danog\MadelineProto\TL\Types\Button Object
 
             if (!$answer){
                 yield $this->sendMessage('🔎 Orderbook UAH', 5);
-            } elseif ( (is_null($this->activeDeal)) || $this->activeDeal['order_id'] != $answer['order_id']) {
+            } elseif ( (empty($this->activeDeal)) || $this->activeDeal['order_id'] != $answer['order_id']) {
                 $this->activeDeal = $answer;
                 $this->status = 'Deal sended';
                 /*dump('Deal '.$answer['order_id'].' send');*/
