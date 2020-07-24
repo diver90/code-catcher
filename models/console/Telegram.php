@@ -17,7 +17,7 @@ class Telegram extends BaseObject
     {
         $settings = [
             'logger' => [
-                'logger_level' => Logger::ERROR,
+                'logger_level' => Logger::NOTICE,
                 'logger_param' => __DIR__ . '/../../runtime/logs/Madeline.log'
             ]
         ];

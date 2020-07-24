@@ -6,6 +6,7 @@ namespace app\models\console;
 use app\models\KunaCodeBotModel;
 use danog\MadelineProto\EventHandler;
 use danog\MadelineProto\Exception;
+use danog\MadelineProto\Logger;
 use danog\MadelineProto\RPCErrorException;
 
 class KunaCodeTelegramHandler extends EventHandler
@@ -53,7 +54,14 @@ class KunaCodeTelegramHandler extends EventHandler
 
         $this->update = $update;
 
-       // $this->logger($update['message']['message'], 'tech', '../../../runtime/logs/tech.log');
+//buttons
+        if (isset($update['message']['reply_markup']['rows'])) {
+            foreach ($update['message']['reply_markup']['rows'] as $row) {
+                foreach ($row['buttons'] as $button) {
+                    print_r($button);
+                }
+            }
+        }
 
         $message = $update['message']['message'];
 
@@ -68,8 +76,7 @@ class KunaCodeTelegramHandler extends EventHandler
         }
 
         if (preg_match("/\bAnother deal has already been made based on this order\b/i", $message)) {
-            $this->warnAdmin = true;
-            //$this->sendMessage('Сделка провалена');
+            $this->activeDeal = [];
             $this->warnAdmin = false;
             yield $this->sendMessage('🔎 Orderbook UAH', 5);
         }
@@ -79,6 +86,7 @@ class KunaCodeTelegramHandler extends EventHandler
         }
 
         if (preg_match("/\bOrder is not found\b/i", $message)) {
+            $this->activeDeal = [];
             yield $this->sendMessage('🔎 Orderbook UAH', 5);
         }
 
@@ -118,6 +126,103 @@ Dear User, your deal №A91250.94C has been deleted
 
 Use the menu under the input field:
 
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButtonCallback
+            [text] => With markup (123)
+            [data] => danog\MadelineProto\TL\Types\Bytes Object
+                (
+                    [bytes:danog\MadelineProto\TL\Types\Bytes:private] => next_list_page::0::extra::5
+                )
+
+        )
+
+    [id] => 204990
+    [peer] => 786805975
+)
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButtonCallback
+            [text] => Refresh
+            [data] => danog\MadelineProto\TL\Types\Bytes Object
+                (
+                    [bytes:danog\MadelineProto\TL\Types\Bytes:private] => next_list_page::0::all::5
+                )
+
+        )
+
+    [id] => 204990
+    [peer] => 786805975
+)
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButtonCallback
+            [text] => Next 20
+            [data] => danog\MadelineProto\TL\Types\Bytes Object
+                (
+                    [bytes:danog\MadelineProto\TL\Types\Bytes:private] => next_list_page::20::all::5
+                )
+
+        )
+
+    [id] => 204990
+    [peer] => 786805975
+)
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButton
+            [text] => ❌ Cancel deal
+        )
+
+    [id] => 204992
+    [peer] => 786805975
+)
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButton
+            [text] => 📥 Pay
+        )
+
+    [id] => 204992
+    [peer] => 786805975
+)
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButton
+            [text] => ❌ Cancel deal
+        )
+
+    [id] => 204994
+    [peer] => 786805975
+)
+danog\MadelineProto\TL\Types\Button Object
+(
+    [button] => Array
+        (
+            [_] => keyboardButtonCallback
+            [text] => 🤝 I have paid
+            [data] => danog\MadelineProto\TL\Types\Bytes Object
+                (
+                    [bytes:danog\MadelineProto\TL\Types\Bytes:private] => send_dealpay_message::98974
+                )
+
+        )
+
+    [id] => 204998
+    [peer] => 786805975
+)
 
 */
 
