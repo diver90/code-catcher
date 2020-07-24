@@ -53,6 +53,8 @@ class KunaCodeTelegramHandler extends EventHandler
 
         $this->update = $update;
 
+       // $this->logger($update['message']['message'], 'tech', '../../../runtime/logs/tech.log');
+
         $message = $update['message']['message'];
 
         /*dump($message);
@@ -87,6 +89,7 @@ class KunaCodeTelegramHandler extends EventHandler
 
         if (preg_match("/\bPlease pay\b/i", $message)) {
             $this->warnAdmin = true;
+
             yield $this->sendMessage('Сделка создана успешно, сумма к оплате ' . $this->activeDeal['price']);
         }
 
@@ -108,6 +111,13 @@ Congradulations! Your deal №D6EA41.C24 is succesfully concluded.\n
 \n
 v7v7C-PxZJj-DNdJ5-nWJyZ-QRQRL-bVbgw-6yHZi-JuNW3-Kha8P-UAH-KCode
 
+Press “1” to cancel the deal
+Press “0” if you you changed your mind and don’t want to cancel the deal.
+
+Dear User, your deal №A91250.94C has been deleted
+
+Use the menu under the input field:
+
 
 */
 
@@ -127,11 +137,13 @@ v7v7C-PxZJj-DNdJ5-nWJyZ-QRQRL-bVbgw-6yHZi-JuNW3-Kha8P-UAH-KCode
 
             if (!$answer){
                 yield $this->sendMessage('🔎 Orderbook UAH', 5);
-            } elseif ( $this->activeDeal && $this->activeDeal['order_id'] != $answer['order_id']) {
+            } elseif ( (is_null($this->activeDeal)) || $this->activeDeal['order_id'] != $answer['order_id']) {
                 $this->activeDeal = $answer;
                 $this->status = 'Deal sended';
                 /*dump('Deal '.$answer['order_id'].' send');*/
                 yield $this->sendMessage('/deal' . $answer['order_id']);
+            } else {
+                var_dump($answer);
             }
         }
 

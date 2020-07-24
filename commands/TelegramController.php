@@ -14,11 +14,6 @@ class TelegramController extends Controller
 
     }
 
-    public function actionRegister()
-    {
-        Telegram::registerSession();
-    }
-
     public function actionKunaBot($number)
     {
         $telegram = new Telegram($number);
