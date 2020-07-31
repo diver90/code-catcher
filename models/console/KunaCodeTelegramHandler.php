@@ -25,6 +25,14 @@ class KunaCodeTelegramHandler extends EventHandler
     public $warnAdmin;
 
     public $activeDeal;
+    /**
+     * @var mixed
+     */
+    private $buttonPaid;
+    /**
+     * @var mixed
+     */
+    //private $buttonCancel;
 
     /**
      * Get peer(s) where to report errors.
@@ -58,7 +66,12 @@ class KunaCodeTelegramHandler extends EventHandler
         if (isset($update['message']['reply_markup']['rows'])) {
             foreach ($update['message']['reply_markup']['rows'] as $row) {
                 foreach ($row['buttons'] as $button) {
-                    print_r($button);
+                    if ($button['text'] === '🤝 I have paid') {
+                        $this->buttonPaid = $button;
+                    }
+                    /*if ($button['text'] === '❌ Cancel deal') {
+                        $this->buttonCancel = $button;
+                    }*/
                 }
             }
         }
@@ -73,6 +86,23 @@ class KunaCodeTelegramHandler extends EventHandler
 
         if (preg_match("/\bStop\b/i", $message)) {
             $this->stop();
+        }
+
+        if (preg_match("/\bStart\b/i", $message)) {
+            yield $this->sendMessage('🔎 Orderbook UAH', 5);
+        }
+
+        if (preg_match("/\bPaid\b/i", $message)) {
+            yield $this->buttonPaid->click();
+        }
+
+        if (preg_match("/\bCancel\b/i", $message)) {
+            yield $this->sendMessage('❌ Cancel deal;', 0);
+        }
+
+        if (preg_match("/\bPress “1” to cancel the deal\b/i", $message)) {
+            $this->activeDeal = [];
+            yield $this->sendMessage('1', 0);
         }
 
         if (preg_match("/\bAnother deal has already been made based on this order\b/i", $message)) {
@@ -99,6 +129,16 @@ class KunaCodeTelegramHandler extends EventHandler
             $this->warnAdmin = true;
 
             yield $this->sendMessage('Сделка создана успешно, сумма к оплате ' . $this->activeDeal['price']);
+        }
+
+        if (preg_match("/^\d{16}$/i", $message)) {
+            $this->warnAdmin = true;
+            yield $this->sendMessage($message);
+        }
+
+        if (preg_match("/^[\d\w-]{53}-UAH-KCode$/", $message)) {
+            $this->warnAdmin = true;
+            yield $this->sendMessage($message);
         }
 
         if (preg_match("/\bThe validity period for Deal\b/i", $message)) {
