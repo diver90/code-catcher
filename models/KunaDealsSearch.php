@@ -16,7 +16,7 @@ class KunaDealsSearch extends KunaDeals
     public function rules()
     {
         return [
-            [['order_id', 'bank'], 'safe'],
+            [['order_id', 'status', 'bank'], 'safe'],
             [['amount', 'percent', 'price'], 'number'],
             [['executed'], 'boolean'],
             [['created_at', 'updated_at'], 'integer'],
@@ -59,6 +59,7 @@ class KunaDealsSearch extends KunaDeals
             'amount' => $this->amount,
             'percent' => $this->percent,
             'price' => $this->price,
+            'status' => $this->status,
             'executed' => $this->executed,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

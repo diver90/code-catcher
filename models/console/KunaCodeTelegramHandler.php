@@ -30,6 +30,10 @@ class KunaCodeTelegramHandler extends EventHandler
      */
     private $buttonPaid;
     /**
+     * @var KunaCodeBotModel|mixed
+     */
+    private $model;
+    /**
      * @var mixed
      */
     //private $buttonCancel;
@@ -53,6 +57,7 @@ class KunaCodeTelegramHandler extends EventHandler
      */
     public function onUpdateNewMessage(array $update): \Generator
     {
+        if (empty($this->model)) $this->model = new KunaCodeBotModel();
 
         $this->warnAdmin = false;
 
@@ -108,6 +113,8 @@ class KunaCodeTelegramHandler extends EventHandler
         if (preg_match("/\bAnother deal has already been made based on this order\b/i", $message)) {
             $this->activeDeal = [];
             $this->warnAdmin = false;
+            $this->model->setActiveDealStatus('failure');
+            $this->model->saveActiveDeal();
             yield $this->sendMessage('🔎 Orderbook UAH', 5);
         }
 
@@ -117,6 +124,8 @@ class KunaCodeTelegramHandler extends EventHandler
 
         if (preg_match("/\bOrder is not found\b/i", $message)) {
             $this->activeDeal = [];
+            $this->model->setActiveDealStatus('failure');
+            $this->model->saveActiveDeal();
             yield $this->sendMessage('🔎 Orderbook UAH', 5);
         }
 
@@ -127,7 +136,8 @@ class KunaCodeTelegramHandler extends EventHandler
 
         if (preg_match("/\bPlease pay\b/i", $message)) {
             $this->warnAdmin = true;
-
+            $this->model->setActiveDealStatus('successful');
+            $this->model->saveActiveDeal();
             yield $this->sendMessage('Сделка создана успешно, сумма к оплате ' . $this->activeDeal['price']);
         }
 
@@ -274,8 +284,8 @@ danog\MadelineProto\TL\Types\Button Object
         }
 
         if (preg_match("/\bBuy this code\b/im", $message)) {
-            $model = new KunaCodeBotModel($message);
-            $answer = $model->countOrders();
+            $this->model->setMessage($message);
+            $answer = $this->model->countOrders();
 
             /*dump($answer);
             dump( $this->status);*/

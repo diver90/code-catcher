@@ -12,6 +12,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $percent
  * @property int|null $price
  * @property string|null $bank
+ * @property string|null $status
  * @property bool|null $executed
  * @property int $created_at
  * @property int $updated_at
@@ -44,11 +45,11 @@ class KunaDeals extends \yii\db\ActiveRecord
     {
         return [
             [['amount', 'percent', 'price', 'created_at', 'updated_at'], 'default', 'value' => null],
-            [['amount', 'percent', 'price', 'order_id', 'bank', 'created_at', 'updated_at', 'executed'], 'safe'],
+            [['amount', 'percent', 'price', 'order_id', 'bank', 'status', 'created_at', 'updated_at', 'executed'], 'safe'],
             [['created_at', 'updated_at'], 'integer'],
             [['executed'], 'boolean'],
             [['created_at', 'updated_at'], 'required'],
-            [['order_id', 'bank'], 'string', 'max' => 255],
+            [['order_id', 'status', 'bank'], 'string', 'max' => 255],
         ];
     }
 
@@ -63,6 +64,7 @@ class KunaDeals extends \yii\db\ActiveRecord
             'percent' => 'Percent',
             'price' => 'Price',
             'bank' => 'Bank',
+            'status' => 'Status',
             'executed' => 'Executed',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

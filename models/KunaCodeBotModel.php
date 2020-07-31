@@ -10,11 +10,9 @@ class KunaCodeBotModel extends BaseObject
     private $activeDeal;
     private $message;
 
-    public function __construct($message,$config = [])
+    public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->message = $message;
-
     }
 
     public function countOrders()
@@ -28,6 +26,7 @@ class KunaCodeBotModel extends BaseObject
             if ($order['percent'] <= $botParams->max_percent) {
                 if ($order['price'] <= $botParams->available_sum && $order['amount'] >= $botParams->min_sum) {
                     if ($botParams->bank === 'ANY' || $order['bank'] === $botParams->bank) {
+                        $order['status'] = 'Try to catch';
                         $this->activeDeal = $order;
                         $this->saveOrder($order);
                         return $order;
@@ -133,13 +132,35 @@ class KunaCodeBotModel extends BaseObject
         $order->update();
     }
 
+    public function updateOrderStatus($order, $status)
+    {
+        $order->status = $status;
+        $order->update();
+    }
+
     public function saveOrder($order)
     {
         if (!(KunaDeals::find()->where(['order_id' => $order['order_id']])->one())) {
             $table = new KunaDeals();
-            $table->attributes = $order; // загшружаем из массива
+            $table->attributes = $order; // загружаем из массива
             $table->save(false);
             unset ($table);
         }
+    }
+
+    public function setMessage($message){
+        $this->message = $message;
+    }
+
+    public function setActiveDealStatus($status){
+        $this->activeDeal['status'] = $status;
+    }
+
+    public function saveActiveDeal()
+    {
+        $order = KunaDeals::find()->where(['order_id' =>  $this->activeDeal['order_id']])->one();
+        $order->status = $this->activeDeal['status'];
+        $order->update();
+        $this->activeDeal = [];
     }
 }

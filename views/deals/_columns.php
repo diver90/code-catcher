@@ -30,6 +30,10 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'bank',
     ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'status',
+    ],
      [
          'class'=>'\kartik\grid\BooleanColumn',
          'attribute'=>'executed',
