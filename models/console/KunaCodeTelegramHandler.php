@@ -97,7 +97,7 @@ class KunaCodeTelegramHandler extends EventHandler
         }
 
         if (preg_match("/\bCancel\b/i", $message)) {
-            yield $this->sendMessage('❌ Cancel deal;', 0);
+            yield $this->sendMessage('❌ Cancel deal', 0);
         }
 
         if (preg_match("/\bPress “1” to cancel the deal\b/i", $message)) {
