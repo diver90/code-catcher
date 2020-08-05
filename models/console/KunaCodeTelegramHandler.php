@@ -136,8 +136,6 @@ class KunaCodeTelegramHandler extends EventHandler
 
         if (preg_match("/\bPlease pay\b/i", $message)) {
             $this->warnAdmin = true;
-            $this->model->setActiveDealStatus('successful');
-            $this->model->saveActiveDeal();
             yield $this->sendMessage('Сделка создана успешно, сумма к оплате ' . $this->activeDeal['price']);
         }
 
@@ -148,6 +146,8 @@ class KunaCodeTelegramHandler extends EventHandler
 
         if (preg_match("/^[\d\w-]{53}-UAH-KCode$/", $message)) {
             $this->warnAdmin = true;
+            $this->model->setActiveDealStatus('successful');
+            $this->model->saveActiveDeal();
             yield $this->sendMessage($message);
         }
 

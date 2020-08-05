@@ -17,7 +17,7 @@ class Telegram extends BaseObject
     {
         $settings = [
             'logger' => [
-                'logger_level' => Logger::ERROR,
+                'logger_level' => Logger::ULTRA_VERBOSE,
                 'logger_param' => __DIR__ . '/../../runtime/logs/Madeline.log'
             ]
         ];
@@ -35,8 +35,8 @@ class Telegram extends BaseObject
 
     public function sendHello(){
 
-        $this->madelin->messages->sendMessage(['peer' => '@diver90_deep', 'message' => "🔎 Orderbook UAH"]);
-        $this->madelin->startAndLoop(TestHandler::class);
+        $this->madelin->messages->sendMessage(['peer' => '@diver90_deep', 'message' => "Hello dear friend, how are you&"]);
+        //$this->madelin->startAndLoop(TestHandler::class);
         //$this->madelin->startAndLoop(KunaCodeTelegramHandler::class);
 
     }

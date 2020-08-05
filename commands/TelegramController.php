@@ -20,9 +20,9 @@ class TelegramController extends Controller
         $telegram->runKunaCodeBot();
     }
 
-    public function actionSendHello()
+    public function actionSendHello($number)
     {
-        $telegram = new Telegram;
+        $telegram = new Telegram($number);
         $telegram->sendHello();
     }
 }
