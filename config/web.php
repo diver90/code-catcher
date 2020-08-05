@@ -60,6 +60,14 @@ $config = [
             'rules' => [
             ],
         ],
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'defaultTimeZone' => 'Europe/Kiev',
+            'timeZone' => 'Europe/Kiev',
+            'dateFormat' => 'd MMMM yyyy',
+            'datetimeFormat' => 'php:d-m-Y H:i:s',
+            'timeFormat' => 'H:i:s',
+        ],
     ],
     'params' => $params,
 ];
