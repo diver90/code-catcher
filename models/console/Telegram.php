@@ -26,18 +26,22 @@ class Telegram extends BaseObject
         parent::__construct($config);
     }
 
-    public function runKunaCodeBot(){
+    public function runBuyBot(){
 
         $this->madelin->messages->sendMessage(['peer' => '@kunacodebot', 'message' => "🔎 Orderbook UAH"]);
-        $this->madelin->startAndLoop(KunaCodeTelegramHandler::class);
+        $this->madelin->startAndLoop(CodeBuyerHandler::class);
 
+    }
+
+    public function runSellBot(){
+        $this->madelin->startAndLoop(CodeSellerHandler::class);
     }
 
     public function sendHello(){
 
         $this->madelin->messages->sendMessage(['peer' => '@diver90_deep', 'message' => "Hello dear friend, how are you&"]);
         //$this->madelin->startAndLoop(TestHandler::class);
-        //$this->madelin->startAndLoop(KunaCodeTelegramHandler::class);
+        //$this->madelin->startAndLoop(CodeBuyerHandler::class);
 
     }
 }

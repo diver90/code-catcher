@@ -14,15 +14,21 @@ class TelegramController extends Controller
 
     }
 
-    public function actionKunaBot($number)
+    public function actionBuyBot($number)
     {
         $telegram = new Telegram($number);
-        $telegram->runKunaCodeBot();
+        $telegram->runBuyBot();
     }
 
     public function actionSendHello($number)
     {
         $telegram = new Telegram($number);
         $telegram->sendHello();
+    }
+
+    public function actionSellBot($number)
+    {
+        $telegram = new Telegram($number);
+        $telegram->runSellBot();
     }
 }
