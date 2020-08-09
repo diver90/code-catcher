@@ -230,7 +230,7 @@ class CodeBuyerHandler extends EventHandler
         $peer = $this->warnAdmin ? self::ADMIN : self::BOT;
         try {
             $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => $messages[0], 'parse_mode' => 'HTML']);
-            sleep(0.01);
+            sleep(0.1);
             yield $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => $messages[1], 'parse_mode' => 'HTML']);
            // yield $this->messages->sendMessage(['multiple' => true, ['peer' => '@' . $peer, 'message' => $messages[0], 'parse_mode' => 'HTML'], ['peer' => '@' . $peer, 'message' => $messages[1], 'parse_mode' => 'HTML']]);
         } catch (RPCErrorException $e) {
