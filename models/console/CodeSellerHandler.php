@@ -91,7 +91,9 @@ class CodeSellerHandler extends EventHandler
             }
         }
 
-        if ($update['message']['from_id'] == '786805975' && $update['message']['date'] > time()-10) {
+        if ($update['message']['from_id'] == '786805975' /*&& $update['message']['date'] > time()-10*/) {
+
+            var_dump($update);
 
             $this->update = $update;
 //buttons
@@ -107,13 +109,14 @@ class CodeSellerHandler extends EventHandler
                         if ($button['text'] === '✅ Yes') {
                             $this->buttonConfirmOrder = $button;
                         }
+                        if ($button['text'] === '⌚️ Prolong') {
+                            $button->click();
+                        }
                     }
                 }
             }
 
             $message = $update['message']['message'];
-
-
 
             if (preg_match("/\bPress “1” to cancel the deal\b/i", $message)) {
                 $this->activeDeal = [];

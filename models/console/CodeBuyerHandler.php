@@ -64,7 +64,7 @@ class CodeBuyerHandler extends EventHandler
 
         $this->warnAdmin = false;
 
-        if (($update['message']['from_id'] == '734324493' || $update['message']['from_id'] == '786805975') && $update['message']['date'] > time()-10) {
+        if (($update['message']['from_id'] == '734324493' || $update['message']['from_id'] == '786805975') && $update['message']['date'] >= time()-10) {
 
             $this->update = $update;
 //buttons
@@ -152,6 +152,7 @@ class CodeBuyerHandler extends EventHandler
                 $this->warnAdmin = true;
                 $this->model->setActiveDealStatus('successful');
                 $this->model->saveActiveDeal();
+                $this->activeDeal = [];
                 yield $this->sendMessage($message);
             }
 
