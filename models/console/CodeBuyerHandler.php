@@ -187,7 +187,7 @@ class CodeBuyerHandler extends EventHandler
                 } elseif (empty($this->activeDeal) || $this->activeDeal['order_id'] !== $answer['order_id']) {
                     $this->activeDeal = $answer;
                     $this->status = self::DEAL_SENDED;
-                    yield $this->sendPayMessage([ '/deal' . $answer['order_id'], '📥 Pay']);
+                    yield $this->sendPayMessage($answer['order_id']);
                     //yield $this->sendMessage('/deal' . $answer['order_id']);
                     print_r('20');
                 } else {
@@ -222,17 +222,16 @@ class CodeBuyerHandler extends EventHandler
     }
 
     /**
-     * @param array $messages
-     * @param float $sleep
+     * @param string $order_id
      * @return \Generator
      */
-    public function sendPayMessage(array $messages): \Generator
+    public function sendPayMessage(string $order_id): \Generator
     {
         $peer = $this->warnAdmin ? self::ADMIN : self::BOT;
         try {
-            $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => $messages[0], 'parse_mode' => 'HTML']);
-            sleep(0.1);
-            yield $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => $messages[1], 'parse_mode' => 'HTML']);
+            $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => '/deal' . $order_id, 'parse_mode' => 'HTML']);
+            sleep(0.2);
+            yield $this->messages->sendMessage(['peer' => '@' . $peer, 'message' =>  '📥 Pay', 'parse_mode' => 'HTML']);
            // yield $this->messages->sendMessage(['multiple' => true, ['peer' => '@' . $peer, 'message' => $messages[0], 'parse_mode' => 'HTML'], ['peer' => '@' . $peer, 'message' => $messages[1], 'parse_mode' => 'HTML']]);
         } catch (RPCErrorException $e) {
             $this->report("Surfaced: $e");
