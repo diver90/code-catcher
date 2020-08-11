@@ -181,9 +181,10 @@ class CodeBuyerHandler extends EventHandler
                 $answer = $this->model->countOrders();
                 print_r('18');
                 if (!$answer) {
+                    $this->activeDeal = [];
                     yield $this->sendMessage('🔎 Orderbook UAH', 5);
                     print_r('19');
-                } elseif (empty($this->activeDeal) || $this->activeDeal['order_id'] === $answer['order_id']) {
+                } elseif (empty($this->activeDeal) || $this->activeDeal['order_id'] !== $answer['order_id']) {
                     $this->activeDeal = $answer;
                     $this->status = self::DEAL_SENDED;
                     yield $this->sendPayMessage([ '/deal' . $answer['order_id'], '📥 Pay']);
