@@ -207,7 +207,7 @@ class CodeBuyerHandler extends EventHandler
         $peer = $this->warnAdmin ? self::ADMIN : self::BOT;
         try {
             $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => '/deal' . $order_id, 'parse_mode' => 'HTML']);
-            sleep(0.9);
+            sleep(1);
             yield $this->messages->sendMessage(['peer' => '@' . $peer, 'message' =>  '📥 Pay', 'parse_mode' => 'HTML']);
 
            // yield $this->messages->sendMessage(['multiple' => true, ['peer' => '@' . $peer, 'message' => $messages[0], 'parse_mode' => 'HTML'], ['peer' => '@' . $peer, 'message' => $messages[1], 'parse_mode' => 'HTML']]);
