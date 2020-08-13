@@ -64,8 +64,6 @@ class CodeBuyerHandler extends EventHandler
 
         $this->warnAdmin = false;
 
-        print_r($update);
-
         if (($update['message']['from_id'] == '734324493' || $update['message']['from_id'] == '786805975') && $update['message']['date'] >= time()-10) {
 
             $this->update = $update;
@@ -87,6 +85,7 @@ class CodeBuyerHandler extends EventHandler
             dump( $this->status);
 
             dump( $this->activeDeal);*/
+            print_r(1 . PHP_EOL);
 
             if (preg_match("/^Stop$/i", $message)) {
                 $this->stop();
@@ -107,7 +106,7 @@ class CodeBuyerHandler extends EventHandler
                 $this->activeDeal = [];
                 yield $this->sendMessage('1', 0);
             }
-
+            print_r(2 . PHP_EOL);
             if (preg_match("/\bAnother deal has already been made based on this order\b/i", $message)) {
                 $this->activeDeal = [];
                 $this->warnAdmin = false;
@@ -145,12 +144,15 @@ class CodeBuyerHandler extends EventHandler
                 $this->model->setActiveDealStatus('successful');
                 $this->model->saveActiveDeal();
                 $this->activeDeal = [];
+                $this->messages->sendMessage(['peer' => '@' . self::BOT, 'message' => '🔎 Orderbook UAH', 'parse_mode' => 'HTML']);
                 yield $this->sendMessage($message);
             }
+            print_r(3 . PHP_EOL);
             if (preg_match("/\bThe validity period for Deal\b/i", $message)) {
                 $this->warnAdmin = true;
                 yield $this->sendMessage('Сделка в ожидании!');
             }
+            print_r(4 . PHP_EOL);
             /*if (preg_match("/\byou are going to accept order\b/i", $message) && $this->status !== self::PAY_SENDED) {
                 $this->status = self::PAY_SENDED;
                 //dump('Pay send');
@@ -160,6 +162,7 @@ class CodeBuyerHandler extends EventHandler
             if (preg_match("/\bBuy this code\b/im", $message)) {
                 $this->model->setMessage($message);
                 $answer = $this->model->countOrders();
+                print_r(5 . PHP_EOL);
                 if (!$answer) {
                     $this->activeDeal = [];
                     yield $this->sendMessage('🔎 Orderbook UAH', 5);
