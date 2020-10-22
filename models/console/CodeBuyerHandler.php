@@ -19,6 +19,8 @@ class CodeBuyerHandler extends EventHandler
 
     const DEAL_SENDED = "deal_sended";
 
+    const PAY_SENDED = "pay_sended";
+
     const NORMAL_CYCLE = "normal";
 
     public $status = self::NORMAL_CYCLE;
@@ -153,11 +155,11 @@ class CodeBuyerHandler extends EventHandler
                 yield $this->sendMessage('Сделка в ожидании!');
             }
             //print_r(4 . PHP_EOL);
-            /*if (preg_match("/\byou are going to accept order\b/i", $message) && $this->status !== self::PAY_SENDED) {
-                $this->status = self::PAY_SENDED;
-                //dump('Pay send');
-                yield $this->sendMessage('📥 Pay');
-            }*/
+//            if (preg_match("/\byou are going to accept order\b/i", $message) && $this->status !== self::PAY_SENDED) {
+//                $this->status = self::PAY_SENDED;
+//                //dump('Pay send');
+//                yield $this->sendMessage('📥 Pay');
+//            }
 
             if (preg_match("/\bBuy this code\b/im", $message)) {
                 $this->model->setMessage($message);
@@ -170,7 +172,7 @@ class CodeBuyerHandler extends EventHandler
                     $this->activeDeal = $answer;
                     $this->status = self::DEAL_SENDED;
                     yield $this->sendPayMessage($answer['order_id']);
-                    //yield $this->sendMessage('/deal' . $answer['order_id']);
+//                    yield $this->sendMessage('/deal' . $answer['order_id']);
                 } else {
                     var_dump($answer);
                     var_dump($this->status);
@@ -210,7 +212,7 @@ class CodeBuyerHandler extends EventHandler
         $peer = $this->warnAdmin ? self::ADMIN : self::BOT;
         try {
             $this->messages->sendMessage(['peer' => '@' . $peer, 'message' => '/deal' . $order_id, 'parse_mode' => 'HTML']);
-            sleep(1);
+            sleep(1.5);
             yield $this->messages->sendMessage(['peer' => '@' . $peer, 'message' =>  '📥 Pay', 'parse_mode' => 'HTML']);
 
            // yield $this->messages->sendMessage(['multiple' => true, ['peer' => '@' . $peer, 'message' => $messages[0], 'parse_mode' => 'HTML'], ['peer' => '@' . $peer, 'message' => $messages[1], 'parse_mode' => 'HTML']]);
