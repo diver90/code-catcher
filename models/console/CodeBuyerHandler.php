@@ -155,11 +155,11 @@ class CodeBuyerHandler extends EventHandler
                 yield $this->sendMessage('Сделка в ожидании!');
             }
             //print_r(4 . PHP_EOL);
-//            if (preg_match("/\byou are going to accept order\b/i", $message) && $this->status !== self::PAY_SENDED) {
-//                $this->status = self::PAY_SENDED;
-//                //dump('Pay send');
-//                yield $this->sendMessage('📥 Pay');
-//            }
+            if (preg_match("/\byou are going to accept order\b/i", $message) && $this->status !== self::PAY_SENDED) {
+                $this->status = self::PAY_SENDED;
+                //dump('Pay send');
+                yield $this->sendMessage('📥 Pay');
+            }
 
             if (preg_match("/\bBuy this code\b/im", $message)) {
                 $this->model->setMessage($message);
